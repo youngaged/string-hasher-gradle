@@ -1,0 +1,45 @@
+pipeline {
+    agent any
+
+    tools {
+        gradle 'Gradle_8.5' // Ensure this name matches the one in Jenkins config
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git url: 'https://github.com/youngaged/string-hasher-gradle.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'gradle clean build'
+            }
+        }
+
+        stage('Test Results') {
+            steps {
+                junit 'build/test-results/test/*.xml'
+            }
+        }
+
+        stage('Archive JAR') {
+            steps {
+                archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Build process complete.'
+        }
+        success {
+            echo '🎉 Build and tests passed successfully!'
+        }
+        failure {
+            echo '⚠️ Build failed. Check console output for details.'
+        }
+    }
+}
