@@ -1,6 +1,6 @@
 package com.jemish.hasher;
 
-// Import Apache Commons Codec library for hashing functions
+// Import Apache Commons Codec library for hashing functions .. //
 import org.apache.commons.codec.digest.DigestUtils;
 
 public class App {
